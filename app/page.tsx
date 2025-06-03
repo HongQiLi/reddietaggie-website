@@ -1,9 +1,9 @@
 import Hero from "./components/Hero";
 import Footer from "./components/Footer";
-import DollFits from "./components/PhoneCases"; // 导入DollFits卡片组件
+import DollFits from "./components/DollFits"; // 导入DollFits卡片组件
 import PhoneCases from "./components/PhoneCases"; // 导入PhoneCases卡片组件
-import CharmsShine from "./components/PhoneCases"; // 导入CharmsShine卡片组件
-import SnowdayPicks from "./components/PhoneCases"; // 导入SnowdayPicks卡片组件
+import CharmsShine from "./components/CharmsShine"; // 导入CharmsShine卡片组件
+import SnowdayPicks from "./components/SnowdayPicks"; // 导入SnowdayPicks卡片组件
 
 export default function Home() {
   return (
