@@ -3,17 +3,27 @@
 import { useEffect, useState } from "react";
 
 export default function Navbar() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true); // 初始显示
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      // 页面往下滑超过 50px 时，显示导航栏
-      setShow(window.scrollY > 50);
+      const currentScrollY = window.scrollY;
+
+      // 向下滚动超过 50px 且继续向下 → 隐藏导航栏
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setShow(false);
+      } else {
+        // 向上滚动 or 回到顶部 → 显示导航栏
+        setShow(true);
+      }
+
+      setLastScrollY(currentScrollY);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   return (
     <div
