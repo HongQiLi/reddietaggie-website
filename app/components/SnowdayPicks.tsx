@@ -14,7 +14,7 @@ const snowdayPicks = Array.from({ length: 4 }, (_, i) => ({
 }));
 
 // 单个商品卡片组件
-function ProductCard({ product }) {
+function ProductCard({ product }: { product: (typeof charmsShine)[0] }) {
   const [isHovered, setIsHovered] = useState(false); // 控制当前卡片是否被鼠标悬停
 
   return (
