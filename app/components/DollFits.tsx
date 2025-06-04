@@ -1,4 +1,4 @@
-"use client"; // 声明这是一个前端组件（不是纯后端渲染）
+"use client"; // 前端组件（不是纯后端渲染）
 
 import Image from "next/image"; // 从 Next.js 导入优化过的图片组件
 import { useState } from "react"; // 引入 React 的状态管理 hook
