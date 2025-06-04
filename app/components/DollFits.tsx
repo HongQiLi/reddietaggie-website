@@ -13,7 +13,7 @@ const dollFits = Array.from({ length: 9 }, (_, i) => ({
 }));
 
 // 商品卡片组件（单个商品展示）
-function ProductCard({ product }) {
+function ProductCard({ product }: { product: (typeof charmsShine)[0] }) {
   const [isHovered, setIsHovered] = useState(false); // 控制是否显示悬停图片
 
   return (
