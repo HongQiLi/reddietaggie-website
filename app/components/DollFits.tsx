@@ -41,16 +41,29 @@ function ProductCard({ product }: { product: (typeof dollFits)[0] }) {
   );
 }
 
-// 商品列表组件，横向滑动展示所有娃娃穿搭商品
+// 商品列表组件，初始展示 4 个商品，点击按钮显示全部
 export default function DollFits() {
+  const [showAll, setShowAll] = useState(false); // 控制是否展开全部商品
+  const displayed = showAll ? dollFits : dollFits.slice(0, 4); // 控制显示哪些商品
+
   return (
     <section className="px-6 py-10">
       <h2 className="text-xl font-bold mb-4">Doll Fits（娃娃穿搭）</h2> {/* 模块标题 */}
-      <div className="flex gap-6 overflow-x-auto scrollbar-hide"> {/* 横向滚动容器 */}
-        {dollFits.map((product) => (
+      <div className="flex flex-wrap gap-6 justify-start">
+        {displayed.map((product) => (
           <ProductCard key={product.id} product={product} /> // 渲染每个商品卡片
         ))}
       </div>
+      {!showAll && (
+        <div className="text-center mt-6">
+          <button
+            className="text-sm px-4 py-2 rounded-full border hover:bg-black hover:text-white transition"
+            onClick={() => setShowAll(true)}
+          >
+            Show More {/* 展开按钮 */}
+          </button>
+        </div>
+      )}
     </section>
   );
 }
