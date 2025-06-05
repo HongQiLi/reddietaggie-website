@@ -1,93 +1,70 @@
-"use client";
+// app/components/PhoneCases.tsx
+"use client"; // 前端组件
 
-import Image from "next/image";
-import { useState } from "react";
+import Image from "next/image"; // 从 Next.js 导入优化过的图片组件
+import { useState } from "react"; // 引入 React 的状态管理 hook
 
-// 商品数据列表，每个对象代表一个手机壳商品
-const phoneCases = [
-  {
-    id: 1,
-    name: "Phone Case 1",
-    frontImage: "/products/PhoneCase1.JPG", // 默认图片
-    hoverImage: "/products/PhoneCase1-1.JPG", // 鼠标悬停时显示的图片
-    price: 22.88,
-  },
-  {
-    id: 2,
-    name: "Phone Case 2",
-    frontImage: "/products/PhoneCase2.JPG",
-    hoverImage: "/products/PhoneCase2-1.JPG",
-    price: 22.88,
-  },
-  {
-    id: 3,
-    name: "Phone Case 3",
-    frontImage: "/products/PhoneCase3.JPG",
-    hoverImage: "/products/PhoneCase3-1.JPG",
-    price: 22.88,
-  },
-  {
-    id: 4,
-    name: "Phone Case 4",
-    frontImage: "/products/PhoneCase4.JPG",
-    hoverImage: "/products/PhoneCase4-1.JPG",
-    price: 22.88,
-  },
-  {
-    id: 5,
-    name: "Phone Case 5",
-    frontImage: "/products/PhoneCase5.JPG",
-    hoverImage: "/products/PhoneCase5-1.JPG",
-    price: 22.88,
-  },
-];
+// 构造一个包含 5 个手机壳商品的数据列表
+const phoneCases = Array.from({ length: 5 }, (_, i) => ({
+  id: i + 1, // 每个商品的唯一编号（从 1 到 5）
+  name: `Phone Case ${i + 1}`, // 商品名称
+  frontImage: `/products/PhoneCase${i + 1}.JPG`, // 默认图片
+  hoverImage: `/products/PhoneCase${i + 1}-1.JPG`, // 鼠标悬停时的图片
+  price: 22.88, // 商品价格
+}));
 
-// 商品卡片组件
+// 商品卡片组件（单个商品展示）
 function ProductCard({ product }: { product: (typeof phoneCases)[0] }) {
   const [isHovered, setIsHovered] = useState(false); // 控制是否显示悬停图片
 
   return (
     <div
       className="w-[240px] bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => setIsHovered(true)} // 鼠标进入时显示悬停图
+      onMouseLeave={() => setIsHovered(false)} // 鼠标离开恢复默认图
     >
       <div className="relative w-full h-[300px]">
-        {/* 商品图像区域，默认显示 frontImage，鼠标悬停切换到 hoverImage */}
         <Image
-          src={isHovered ? product.hoverImage : product.frontImage}
-          alt={product.name}
-          fill
-          className="object-cover"
+          src={isHovered ? product.hoverImage : product.frontImage} // 根据悬停状态切换图片
+          alt={product.name} // 图片 alt 文本有助于 SEO 和无障碍
+          fill // 让 Image 自动填满容器
+          className="object-cover" // 保持图片比例
         />
       </div>
       <div className="p-4">
-        {/* 商品名称 */}
-        <h3 className="font-semibold text-sm mb-1">{product.name}</h3>
-        {/* 商品价格 */}
-        <p className="text-sm text-gray-600 mb-2">${product.price.toFixed(2)}</p>
-        {/* 现在购买（现在只是按钮样式，不跳转） */}
+        <h3 className="font-semibold text-sm mb-1">{product.name}</h3> {/* 商品名称 */}
+        <p className="text-sm text-gray-600 mb-2">${product.price.toFixed(2)}</p> {/* 商品价格 */}
         <button className="mt-2 text-sm px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">
-          Buy Now
+          Buy Now {/* 现在购买按钮（暂不跳转） */}
         </button>
       </div>
     </div>
   );
 }
 
-// 总组件，用于渲染一排横向滑动的商品卡片
+// 商品列表组件，初始展示 4 个商品，点击按钮显示全部
 export default function PhoneCases() {
+  const [showAll, setShowAll] = useState(false); // 控制是否展开全部商品
+  const displayed = showAll ? phoneCases : phoneCases.slice(0, 4); // 控制显示哪些商品
+
   return (
     <section className="px-6 py-10">
-      {/* Section 标题 */}
-      <h2 className="text-xl font-bold mb-4">Phone Cases（手机壳）</h2>
-      {/* 横向滚动容器 */}
-      <div className="flex gap-6 overflow-x-auto scrollbar-hide">
-        {/* 渲染每个商品卡片 */}
-        {phoneCases.map((product) => (
-          <ProductCard key={product.id} product={product} />
+      <h2 className="text-xl font-bold mb-4">Phone Cases（手机壳）</h2> {/* 模块标题 */}
+      <div className="flex flex-wrap gap-6 justify-start">
+        {displayed.map((product) => (
+          <ProductCard key={product.id} product={product} /> // 渲染每个商品卡片
         ))}
       </div>
+      {!showAll && (
+        <div className="text-center mt-6">
+          <button
+            className="text-sm px-4 py-2 rounded-full border hover:bg-black hover:text-white transition"
+            onClick={() => setShowAll(true)}
+          >
+            Show More {/* 展开按钮 */}
+          </button>
+        </div>
+      )}
     </section>
   );
 }
