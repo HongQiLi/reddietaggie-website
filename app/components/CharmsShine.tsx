@@ -1,7 +1,8 @@
-"use client"; // 前端组件
+"use client"; // 前端组件（不是纯后端渲染）
 
 import Image from "next/image"; // 从 Next.js 导入优化过的图片组件
 import { useState } from "react"; // 引入 React 的状态管理 hook
+import { ChevronRight, ChevronLeft } from "lucide-react"; // 导入左右箭头图标
 
 // 构造一个包含 4 个饰品商品的数据列表
 const charmItems = Array.from({ length: 4 }, (_, i) => ({
@@ -41,29 +42,49 @@ function ProductCard({ product }: { product: (typeof charmItems)[0] }) {
   );
 }
 
-// 商品列表组件，初始展示 4 个商品，点击按钮显示全部
+// 商品列表组件，初始展示 5 个，点击箭头按钮滑动浏览
 export default function CharmsShine() {
-  const [showAll, setShowAll] = useState(false); // 控制是否展开全部商品
-  const displayed = showAll ? charmItems : charmItems.slice(0, 4); // 控制显示哪些商品
+  const [startIndex, setStartIndex] = useState(0); // 当前起始索引
+  const visibleCount = 3; // 每次展示的商品数
+
+  const handleNext = () => {
+    setStartIndex((prev) => (prev + visibleCount < charmItems.length ? prev + 1 : prev));
+  };
+
+  const handlePrev = () => {
+    setStartIndex((prev) => (prev > 0 ? prev - 1 : 0));
+  };
+
+  const visibleItems = charmItems.slice(startIndex, startIndex + visibleCount);
 
   return (
     <section className="px-6 py-10">
       <h2 className="text-xl font-bold mb-4">Charms & Shine（饰品与闪闪小物）</h2> {/* 模块标题 */}
-      <div className="flex flex-wrap gap-6 justify-start">
-        {displayed.map((product) => (
-          <ProductCard key={product.id} product={product} /> // 渲染每个商品卡片
-        ))}
-      </div>
-      {!showAll && (
-        <div className="text-center mt-6">
+      <div className="relative flex items-center">
+        {startIndex > 0 && (
           <button
-            className="text-sm px-4 py-2 rounded-full border hover:bg-black hover:text-white transition"
-            onClick={() => setShowAll(true)}
+            className="absolute left-0 z-10 bg-white p-2 rounded-full shadow-md hover:bg-neutral-200"
+            onClick={handlePrev}
           >
-            Show More {/* 展开按钮 */}
+            <ChevronLeft size={20} />
           </button>
+        )}
+
+        <div className="flex gap-6 overflow-hidden w-full justify-center">
+          {visibleItems.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
         </div>
-      )}
+
+        {startIndex + visibleCount < charmItems.length && (
+          <button
+            className="absolute right-0 z-10 bg-white p-2 rounded-full shadow-md hover:bg-neutral-200"
+            onClick={handleNext}
+          >
+            <ChevronRight size={20} />
+          </button>
+        )}
+      </div>
     </section>
   );
 }
