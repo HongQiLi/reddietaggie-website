@@ -19,11 +19,6 @@ export const metadata: Metadata = {
   description: "Cute fashion picks for your vibe ✨",
 };
 
-export const metadata = {
-  title: "Reddie Taggie", // 网页标签的名字
-  description: "A cute and stylish shop for you!", // 网页描述，可选
-};
-
 export default function RootLayout({
   children,
 }: {
