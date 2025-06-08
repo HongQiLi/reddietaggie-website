@@ -19,16 +19,23 @@ export const metadata: Metadata = {
   description: "Cute fashion picks for your vibe ✨",
 };
 
+export const metadata = {
+  title: "Reddie Taggie", // 网页标签的名字
+  description: "A cute and stylish shop for you!", // 网页描述，可选
+};
+
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <head>
+        {/* 设置你上传的 logo 图标 */}
+        <link rel="icon" href="/logo/logo1.ico" type="image/x-icon" />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>
     </html>
