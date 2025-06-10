@@ -2,24 +2,60 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
-// 模拟滑雪好物数据（图片文件已上传至 public/products）
-const snowItems = Array.from({ length: 4 }, (_, i) => ({
-  id: i + 1,
-  name: `Snowday Pick ${i + 1}`,
-  frontImage: `/products/snow${i + 1}.JPG`, // 默认图片
-  hoverImage: `/products/snow${i + 1}-1.JPG`, // 鼠标悬停图片（如果没有也可以用 frontImage）
-  price: 22.88,
-}));
+// 商品数据（滑雪灵感好物）
+const snowdayPicks = [
+  {
+    id: 1,
+    name: "Snow Pick 1",
+    frontImage: "/products/snow1.JPG",
+    hoverImage: "/products/snow1-1.JPG",
+    price: 22.88,
+  },
+  {
+    id: 2,
+    name: "Snow Pick 2",
+    frontImage: "/products/snow2.JPG",
+    hoverImage: "/products/snow2-1.JPG",
+    price: 22.88,
+  },
+  {
+    id: 3,
+    name: "Snow Pick 3",
+    frontImage: "/products/snow3.JPG",
+    hoverImage: "/products/snow3-1.JPG",
+    price: 22.88,
+  },
+  {
+    id: 4,
+    name: "Snow Pick 4",
+    frontImage: "/products/snow4.JPG",
+    hoverImage: "/products/snow4-1.JPG",
+    price: 22.88,
+  },
+  {
+    id: 5,
+    name: "Snow Pick 5",
+    frontImage: "/products/snow5.JPG",
+    hoverImage: "/products/snow5-1.JPG",
+    price: 22.88,
+  },
+  {
+    id: 6,
+    name: "Snow Pick 6",
+    frontImage: "/products/snow6.JPG",
+    hoverImage: "/products/snow6-1.JPG",
+    price: 22.88,
+  },
+];
 
-// 商品卡片组件
-function ProductCard({ product }: { product: (typeof snowItems)[0] }) {
+// 单个商品卡片组件
+function ProductCard({ product }: { product: (typeof snowdayPicks)[0] }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
-      className="w-[240px] flex-shrink-0 bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition"
+      className="w-[240px] bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -42,50 +78,15 @@ function ProductCard({ product }: { product: (typeof snowItems)[0] }) {
   );
 }
 
-// 总组件（可左右滑动）
+// 总组件
 export default function SnowdayPicks() {
-  const [startIndex, setStartIndex] = useState(0);
-  const visibleCount = 3; // 一次展示 3 个商品
-
-  const handleNext = () => {
-    if (startIndex + visibleCount < snowItems.length) {
-      setStartIndex(startIndex + 1);
-    }
-  };
-
-  const handlePrev = () => {
-    if (startIndex > 0) {
-      setStartIndex(startIndex - 1);
-    }
-  };
-
   return (
     <section className="px-6 py-10">
-      <h2 className="text-xl font-bold mb-4">Snowday Picks（滑雪好物）</h2>
-      <div className="relative flex items-center">
-        {startIndex > 0 && (
-          <button
-            className="absolute left-0 z-10 bg-white p-2 rounded-full shadow-md hover:bg-neutral-200"
-            onClick={handlePrev}
-          >
-            <ChevronLeft size={20} />
-          </button>
-        )}
-
-        <div className="flex gap-6 overflow-hidden w-full justify-center">
-          {snowItems.slice(startIndex, startIndex + visibleCount).map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
-
-        {startIndex + visibleCount < snowItems.length && (
-          <button
-            className="absolute right-0 z-10 bg-white p-2 rounded-full shadow-md hover:bg-neutral-200"
-            onClick={handleNext}
-          >
-            <ChevronRight size={20} />
-          </button>
-        )}
+      <h2 className="text-xl font-bold mb-4">Snowday Picks（滑雪灵感好物）</h2>
+      <div className="flex gap-6 overflow-x-auto scrollbar-hide">
+        {snowdayPicks.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       </div>
     </section>
   );
